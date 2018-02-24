@@ -1,14 +1,13 @@
 #python imports
 import random
+import time
 
 #external libs imports
 import pygame
 
 #local imports
 from world_map import wmap
-
-#casting classes to easly acess
-world_map = wmap.world_map
+from world_map.wmap import world_map
 
 #information about the screen pygame.display.Info()
 screen_info = None
@@ -35,12 +34,14 @@ def game_init():
 	global screen_info
 	global game_display
 	global clock
+	start_time = time.time()
 
 	print('initializing...')
 
 	#initialize libraries
 	print('\tpygame...')
 	pygame.init()
+	print('\tdone')
 
 	#initialize global variables
 	gl_running = True
@@ -55,25 +56,29 @@ def game_init():
 	print('\tAmila modules...')
 	world_map.preprint = '\t\t'
 	world_map.init()
+	print('\tdone')
 
-	print('done\n')
+	print('done in %f seconds\n' % (time.time() - start_time))
 
 #deinitialize the needed libraries and the game modules
 def game_quit():
+	start_time = time.time()
 
 	print('quiting...')
 
 	#quiting libraries
 	print('\tpygame...')
 	pygame.quit()
+	print('\tdone')
 
 	#quiting modules
 	print('\tAmila modules...')
 	world_map.preprint = '\t\t'
 	world_map.quit()
+	print('\tdone')
 
 	#quiting python itself
-	print('done')
+	print('done in %f\n' % (time.time() - start_time))
 	quit()
 
 def main():

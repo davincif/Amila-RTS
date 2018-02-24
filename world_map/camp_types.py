@@ -2,7 +2,7 @@ from enum import Enum
 
 # from fuzy_prob.prob import Prob
 
-class CampType():
+class CampType(Enum):
 	CAMP = 1
 	CAVE = 2
 	DOUGEON = 3
@@ -10,7 +10,7 @@ class CampType():
 	SEA = 5
 	AQUIFER = 6
 
-class CampProb():
+class CampProb(Enum):
 	# CAMP =
 	# CAVE =
 	# DOUGEON =
