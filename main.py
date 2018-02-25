@@ -102,7 +102,7 @@ def main():
 				gl_running = False;
 
 		game_display.fill((0,0,0))
-		world_map.draw(game_display)
+		world_map.draw(game_display, screen_info)
 		pygame.display.update()
 		clock.tick(game_fps)
 

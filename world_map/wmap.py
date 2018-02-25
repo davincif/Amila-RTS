@@ -34,7 +34,7 @@ class Wmap():
 		bioma_types.quit()
 		print(self.preprint + "\tdone")
 
-		print(' done')
+		print(self.preprint + ' done')
 
 	def def_map_xy(self, mapx, mapy):
         # argument type check
@@ -48,17 +48,25 @@ class Wmap():
 		self.__map_x_size = mapx
 		self.__map_y_size = mapy
 
-	def draw(self, display):
+	def draw(self, display, screen_info):
 		ii = 0
 		while ii < self.__map_y_size:
 
-			ij = 0
-			while ij < self.__map_x_size:
-				display.blit(bioma_types.img[self.__matrix[ii][ij].get_bioma()], (ij*50, ii*50))
+			iiprint = ii*50
+			if(iiprint < screen_info.current_h):
+				ij = 0
+				while ij < self.__map_x_size:
+					ijprint = ij*50
+					if(ijprint < screen_info.current_w):
+						display.blit(bioma_types.img[self.__matrix[ii][ij].get_bioma()], (ijprint, iiprint))
 
-				ij += 1
+						ij += 1
+					else:
+						break
 
-			ii += 1
+				ii += 1
+			else:
+				break
 
 	def generate_map(self):
 		if(self.__is_generated):
