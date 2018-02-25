@@ -96,10 +96,13 @@ def main():
 	# main loop
 	while gl_running:
 
+		#event headling
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				gl_running = False;
 
+		game_display.fill((0,0,0))
+		world_map.draw(game_display)
 		pygame.display.update()
 		clock.tick(game_fps)
 

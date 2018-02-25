@@ -1,5 +1,7 @@
 from enum import Enum
 
+import pygame
+
 
 class BiomaType(Enum):
 	#mark
@@ -54,6 +56,36 @@ probtable = [
 	0
 ]
 
+img_dir = {
+	BiomaType.HOT_DISERT: 'imgs/' + BiomaType.HOT_DISERT.name.lower() + '.png',
+	BiomaType.COLD_DISERT: 'imgs/' + BiomaType.COLD_DISERT.name.lower() + '.png',
+	BiomaType.HILLY: 'imgs/' + BiomaType.HILLY.name.lower() + '.png',
+	BiomaType.PLAINS: 'imgs/' + BiomaType.PLAINS.name.lower() + '.png',
+	BiomaType.FLOREST: 'imgs/' + BiomaType.FLOREST.name.lower() + '.png',
+	BiomaType.SWAMPY: 'imgs/' + BiomaType.SWAMPY.name.lower() + '.png',
+	BiomaType.ARID: 'imgs/' + BiomaType.ARID.name.lower() + '.png',
+	BiomaType.TUNDRA: 'imgs/' + BiomaType.TUNDRA.name.lower() + '.png',
+	BiomaType.PRAIRIE: 'imgs/' + BiomaType.PRAIRIE.name.lower() + '.png'
+}
+
+img = None
+
+def init():
+	global img
+	img = {
+		BiomaType.HOT_DISERT: pygame.image.load(img_dir[BiomaType.HOT_DISERT]),
+		BiomaType.COLD_DISERT: pygame.image.load(img_dir[BiomaType.COLD_DISERT]),
+		BiomaType.HILLY: pygame.image.load(img_dir[BiomaType.HILLY]),
+		BiomaType.PLAINS: pygame.image.load(img_dir[BiomaType.PLAINS]),
+		BiomaType.FLOREST: pygame.image.load(img_dir[BiomaType.FLOREST]),
+		BiomaType.SWAMPY: pygame.image.load(img_dir[BiomaType.SWAMPY]),
+		BiomaType.ARID: pygame.image.load(img_dir[BiomaType.ARID]),
+		BiomaType.TUNDRA: pygame.image.load(img_dir[BiomaType.TUNDRA]),
+		BiomaType.PRAIRIE: pygame.image.load(img_dir[BiomaType.PRAIRIE])
+	}
+
+def quit():
+	pass
 
 def nextBioma(currentb):
 	bio = BiomaType.NOTHING

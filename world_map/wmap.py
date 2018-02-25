@@ -19,11 +19,21 @@ class Wmap():
 		pass
 
 	def init(self):
-		print(self.preprint + 'wmap from world_map...', end='')
-		print(' done')
+		print(self.preprint + 'wmap from world_map...',)
+
+		print(self.preprint + "\tbioma_types...")
+		bioma_types.init()
+		print(self.preprint + "\tdone")
+
+		print(self.preprint + ' done')
 
 	def quit(self):
-		print(self.preprint + 'wmap from world_map...', end='')
+		print(self.preprint + 'wmap from world_map...')
+
+		print(self.preprint + "\tbioma_types...")
+		bioma_types.quit()
+		print(self.preprint + "\tdone")
+
 		print(' done')
 
 	def def_map_xy(self, mapx, mapy):
@@ -38,6 +48,18 @@ class Wmap():
 		self.__map_x_size = mapx
 		self.__map_y_size = mapy
 
+	def draw(self, display):
+		ii = 0
+		while ii < self.__map_y_size:
+
+			ij = 0
+			while ij < self.__map_x_size:
+				display.blit(bioma_types.img[self.__matrix[ii][ij].get_bioma()], (ij*50, ii*50))
+
+				ij += 1
+
+			ii += 1
+
 	def generate_map(self):
 		if(self.__is_generated):
 			raise Exception('map is already generated')
@@ -49,32 +71,40 @@ class Wmap():
 		bioma_cdf = prob.make_cdf(bioma_types.probtable)
 		bioma_list = BiomaType.get_list()
 
-		ix = 0
+		ii = 0
 		heat = 0
-		while ix < self.__map_x_size:
+		heatmatrix = []
+		while ii < self.__map_y_size:
 			line = []
-			bio2gen = BiomaType.ANY
+			heatline = []
 
-			iy = 0
-			while iy < self.__map_y_size:
+			if(ii > 0):
+				heat = heatmatrix[ii-1][0]
+				bio2gen = self.__matrix[ii-1][0]
+			else:
+				bio2gen = BiomaType.ANY
+
+			ij = 0
+			while ij < self.__map_x_size:
 
 				if(heat == 0):
 					heat = 100
-					bio2gen = BiomaType(prob.rand_pick(bioma_list, bioma_cdf))
+					bio2gen = Camp(BiomaType(prob.rand_pick(bioma_list, bioma_cdf)))
 				else:
 					coin = random.randint(1, 100)
 					if(coin < heat):
-						heat -= 3 + (max(bioma_types.probtable) - bioma_types.probtable[bio2gen.value])
+						heat -= 3 + (max(bioma_types.probtable) - bioma_types.probtable[bio2gen.get_bioma().value])
 					else:
 						heat = 0
-						bio2gen = BiomaType(prob.rand_pick(bioma_list, bioma_cdf))
+						bio2gen = Camp(BiomaType(prob.rand_pick(bioma_list, bioma_cdf)))
 
 				line.append(bio2gen)
-
-				iy += 1
+				heatline.append(heat)
+				ij += 1
 
 			self.__matrix.append(line)
-			ix += 1
+			heatmatrix.append(heatline)
+			ii += 1
 
 		self.__is_generated = True
 		print(' done in %f seconds\n' % (time.time() - start_time), end='\n\n')
