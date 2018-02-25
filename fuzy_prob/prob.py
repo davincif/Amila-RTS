@@ -13,7 +13,7 @@ def make_cdf(probs):
         cdf = {}
         probsum = 0
 
-        for key, value in probl.items():
+        for key, value in probs.items():
             probsum += value * __prob_correction
             cdf[key] = probsum
 
@@ -32,17 +32,23 @@ def make_cdf(probs):
 
 
 ###
-# topick must be a list of value to be picked
-# distribution must be list of cdf respecto to the topick list
+# topick must be a list or dict of value to be picked
+# distribution must be list of cdf respecto to the topick list or dict
 ###
 def rand_pick(topick, distribution):
     picked = None
     coin = flit_a_coin()
 
-    for count in range(0, len(distribution)):
-        if(coin <= distribution[count]):
-            picked = topick[count]
-            break
+    if(type(distribution) == dict):
+        for key, value in distribution.items():
+            if(coin <= value):
+                picked = topick[key.value]
+                break
+    elif(type(distribution) == list):
+        for count in range(0, len(distribution)):
+            if(coin <= distribution[count]):
+                picked = topick[count]
+                break
 
     return picked
 

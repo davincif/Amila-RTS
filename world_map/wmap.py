@@ -76,42 +76,24 @@ class Wmap():
 
 		print('generating world map...', end='')
 
-		bioma_cdf = prob.make_cdf(bioma_types.probtable)
-		bioma_list = BiomaType.get_list()
+		biomas = BiomaType.get_dict()
 
 		ii = 0
-		heat = 0
-		heatmatrix = []
 		while ii < self.__map_y_size:
 			line = []
-			heatline = []
 
-			if(ii > 0):
-				heat = heatmatrix[ii-1][0]
-				bio2gen = self.__matrix[ii-1][0]
-			else:
-				bio2gen = BiomaType.ANY
-
+			bio2gen = Camp(BiomaType.ANY)
 			ij = 0
 			while ij < self.__map_x_size:
+				if(ii > 0):
+					bio2gen = self.__matrix[ii-1][0]
 
-				if(heat == 0):
-					heat = 100
-					bio2gen = Camp(BiomaType(prob.rand_pick(bioma_list, bioma_cdf)))
-				else:
-					coin = random.randint(1, 100)
-					if(coin < heat):
-						heat -= 3 + (max(bioma_types.probtable) - bioma_types.probtable[bio2gen.get_bioma().value])
-					else:
-						heat = 0
-						bio2gen = Camp(BiomaType(prob.rand_pick(bioma_list, bioma_cdf)))
+				bio2gen = Camp(prob.rand_pick(biomas, bioma_types.cdf_table[bio2gen.get_bioma()]))
 
 				line.append(bio2gen)
-				heatline.append(heat)
 				ij += 1
 
 			self.__matrix.append(line)
-			heatmatrix.append(heatline)
 			ii += 1
 
 		self.__is_generated = True
